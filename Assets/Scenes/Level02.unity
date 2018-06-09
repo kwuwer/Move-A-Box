@@ -1087,7 +1087,7 @@ Prefab:
     - target: {fileID: 114276354952593296, guid: 5c63f67c9a403494886688f9b6dc1a4a,
         type: 2}
       propertyPath: m_Text
-      value: You finished the game
+      value: You finished this level
       objectReference: {fileID: 0}
     - target: {fileID: 224368903616616108, guid: 5c63f67c9a403494886688f9b6dc1a4a,
         type: 2}
