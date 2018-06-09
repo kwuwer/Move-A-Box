@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class Credits : MonoBehaviour {
 
+
+    // No.. udaj się do menu
     public void GoToMenu(){
         SceneManager.LoadScene("MainMenu");
     }

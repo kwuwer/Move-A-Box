@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour
 {
+    // Wszystkie zmienne poniżej to referencje do obiektów, info dalej
     public GameObject FinishPanel;
     public GameObject Player;
     private PlayerController _player;
@@ -14,9 +15,20 @@ public class LevelController : MonoBehaviour
     public GameObject GameOver;
     public Text LifesText;
 
-    // Already lost life?
+    /* Sprawdzamy, czy już wykonaliśmy funkcję... 
+     * inaczej będzie się odpalać w nieskończoność
+     */
     private bool alreadyDone;
 
+    /* UWAGA! BEHOLD!
+     * 
+     * Poniższy typ w Unity pozwala nam na stworzenie funkcji, 
+     * której działanie możemy opóźnić przez 'yield return new WaitForSeconds(float value);'
+     * 
+     * Jest to część tzw. Coroutine, co działa trochę jak wielowątkowość...
+     * Nie wiem jak to inaczej wyjaśnić, ale wywołujac Coroutine, 
+     * możemy wstrzymać wywoływanie na chwilę, nie stopując całej gry(programu)
+     */
     IEnumerator LoadNextLevel(){
         yield return new WaitForSeconds(7f);
         GameManager.Instance.NextLevel();
@@ -35,6 +47,8 @@ public class LevelController : MonoBehaviour
         yield return null;
     }
 
+
+    // Ta i funkcja LostLife są wywoływane przez Coroutine
     public void FinishedLevel(){
         if (alreadyDone != true)
         {
@@ -64,7 +78,7 @@ public class LevelController : MonoBehaviour
         }
     }
 
-
+    // Inicjalizacja...
     private void Start()
     {
         Player = GameObject.Find("Player");
@@ -72,6 +86,8 @@ public class LevelController : MonoBehaviour
         alreadyDone = false;
     }
 
+    // Sprawdzamy co klatkę czy 'plejer' wtopił, czy może udało się mu skończyć poziom
+    // Mam tu trochę rozjazd między finishedLevel a LostLife... do poprawienia -- KW
     private void Update()
     {
         if (_player.finishedLevel == true){

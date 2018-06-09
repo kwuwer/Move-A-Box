@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour {
 
+
+    // Ogólnie ładowanie scen albo wyjście z gry
     public void PlayGame(){
         StartCoroutine(PlayGameCoroutine());
     }
