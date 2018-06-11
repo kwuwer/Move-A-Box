@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour {
         forwardForce = GameManager.Instance.fwSpeed;
         sideForce = GameManager.Instance.sideSpeed;
         lostLife = false;
-        lostLife = false;
+        soundOn = false;
         finishedLevel = false;
 	}
 
