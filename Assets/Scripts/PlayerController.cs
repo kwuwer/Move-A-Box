@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour {
     // Czy przegraliśmy? Czy wygraliśmy?
     public bool lostLife;
     public bool finishedLevel;
+    public bool soundOn;
 
     // Sprawdzamy czy ruszamy się w lewo czy prawo
     private bool leftSide;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour {
         Debug.Log(GameManager.Instance.difficulty);
         forwardForce = GameManager.Instance.fwSpeed;
         sideForce = GameManager.Instance.sideSpeed;
+        lostLife = false;
         lostLife = false;
         finishedLevel = false;
 	}
@@ -90,9 +92,15 @@ public class PlayerController : MonoBehaviour {
        
         if (collision.gameObject.CompareTag("Obstacle") == true){
             Debug.Log("Collision!");
+            if (soundOn == false)
+            {
+                var audioSource = GetComponent<AudioSource>();
+                audioSource.Play();
+            }
             forwardForce = 0;
             rb.AddForce(0, 0, forwardForce);
             lostLife = true;
+            soundOn = true;
         }
     }
 }

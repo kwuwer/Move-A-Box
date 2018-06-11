@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio for Mac
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Move-A-Box", "Assembly-CSharp.csproj", "{30FAB439-DDC8-36EB-EE4C-6C467105E8B2}"
 EndProject
 Global
