@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
     // Offset służy nam do ustawienia kamery za graczem w pozycji 'fixed'
     private Vector3 offset; 
     public float forwardForce;
+    public float maxForce;
     public float sideForce;
 
     // Czy przegraliśmy? Czy wygraliśmy?
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour {
         offset = transform.position - playerCamera.transform.position;
         Debug.Log(GameManager.Instance.difficulty);
         forwardForce = GameManager.Instance.fwSpeed;
+        maxForce = GameManager.Instance.maxforce;
         sideForce = GameManager.Instance.sideSpeed;
         lostLife = false;
         finishedLevel = false;
@@ -66,11 +68,16 @@ public class PlayerController : MonoBehaviour {
      *  a odpowiednia siła zostaje dodana tutaj.
      */
     void FixedUpdate () {
-        if (leftSide)
+        if (forwardForce != maxForce) {
+            if (leftSide)
             rb.AddForce(-sideForce, 0, 0, ForceMode.VelocityChange);
         else if (rightSide)
             rb.AddForce(sideForce, 0, 0, ForceMode.VelocityChange);
-        rb.AddForce(0, 0, forwardForce);
+            rb.AddForce(0, 0, forwardForce);
+        }else{
+            rb.AddForce(0, 0, maxForce);
+        }
+            
 	}
 
     /* Kamerę za graczem ustawiamy w LateUpdate, kiedy to już wszystkie obliczenia
