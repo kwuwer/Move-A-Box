@@ -107,11 +107,8 @@ public class PlayerController : MonoBehaviour {
             forwardForce = 0;
             rb.AddForce(0, 0, forwardForce);
             lostLife = true;
-<<<<<<< HEAD
-        }
-=======
             soundOn = true;
         }
->>>>>>> 2d81b5dd1b00972d3b43bc228b6f94d325a81e7c
-    }
+        }
 }
+
