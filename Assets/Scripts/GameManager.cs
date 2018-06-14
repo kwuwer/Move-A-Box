@@ -9,6 +9,7 @@ public class GameManager
     public string difficulty { get; set; }
     public int lifes { get; set; }
     public float fwSpeed { get; set; }
+    public float maxforce { get; set; }
     public float sideSpeed { get; set; }
 
     // Poniższy kod odpowiada za singleton GameManager-a (robione na pałę)
@@ -62,24 +63,28 @@ public class GameManager
     public void InitGame(){
         switch (difficulty){
             case "easy":
-                fwSpeed = 10.0f;
+                fwSpeed = 6.0f;
+                maxforce = 100.0f;
                 sideSpeed = 0.5f;
-                lifes = 5;
+                lifes = 4;
                 break;
             case "medium":
-                fwSpeed = 15.0f;
-                sideSpeed = 0.6f;
-                lifes = 3;
-                break;
-            case "hard":
-                fwSpeed = 18.0f;
+                fwSpeed = 7.0f;
+                maxforce = 120.0f;
                 sideSpeed = 0.7f;
                 lifes = 3;
                 break;
+            case "hard":
+                fwSpeed = 9.0f;
+                maxforce = 150.0f;
+                sideSpeed = 1.0f;
+                lifes = 2;
+                break;
             default:
-                fwSpeed = 10.0f;
+                fwSpeed = 6.0f;
+                maxforce = 100.0f;
                 sideSpeed = 0.5f;
-                lifes = 5;
+                lifes = 4;
                 break;
         }
     }
