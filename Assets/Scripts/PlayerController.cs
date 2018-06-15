@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviour {
     public bool lostLife;
     public bool finishedLevel;
     public bool soundOn;
+    private bool hitTar;
+    private bool addedExtraLife;
+    private bool enabledGodMode;
+
 
     // Sprawdzamy czy ruszamy się w lewo czy prawo
     private bool leftSide;
@@ -34,6 +38,9 @@ public class PlayerController : MonoBehaviour {
         lostLife = false;
         soundOn = false;
         finishedLevel = false;
+        hitTar = false;
+        addedExtraLife = false;
+        enabledGodMode = false;
 	}
 
     /* Primo  : sprawdzamy, czy mamy się poruszać w lewo czy w prawo
@@ -96,19 +103,63 @@ public class PlayerController : MonoBehaviour {
     // Collision!
     private void OnCollisionEnter(Collision collision)
     {
-       
-        if (collision.gameObject.CompareTag("Obstacle") == true){
-            Debug.Log("Collision!");
-            if (soundOn == false)
+        if (enabledGodMode == false)
+        {
+            if (collision.gameObject.CompareTag("Obstacle") == true)
             {
-                var audioSource = GetComponent<AudioSource>();
-                audioSource.Play();
+                if (GameManager.Instance.extraLifes > 0)
+                {
+                    collision.gameObject.SetActive(false);
+                    GameManager.Instance.extraLifes -= 1;
+                }
+                else
+                {
+                    Debug.Log("Collision!");
+                    if (soundOn == false)
+                    {
+                        var audioSource = GetComponent<AudioSource>();
+                        audioSource.Play();
+                    }
+                    forwardForce = 0;
+                    rb.AddForce(0, 0, forwardForce);
+                    lostLife = true;
+                    soundOn = true;
+                }
             }
-            forwardForce = 0;
-            rb.AddForce(0, 0, forwardForce);
-            lostLife = true;
-            soundOn = true;
         }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Tar") == true)
+        {
+            if (hitTar == false)
+            {
+                sideForce = sideForce / 4;
+                other.gameObject.SetActive(false);
+                hitTar = true;
+            }
         }
+        if (other.gameObject.CompareTag("ExtraLife") == true)
+        {
+            if (addedExtraLife == false)
+            {
+                GameManager.Instance.extraLifes += 1;
+                other.gameObject.SetActive(false);
+                addedExtraLife = true;
+            }
+        }
+        if (other.gameObject.CompareTag("Immortal") == true)
+        {
+            if (enabledGodMode == false)
+            {
+                enabledGodMode = true;
+                other.gameObject.SetActive(false);
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        addedExtraLife = false;
+    }
 }
 

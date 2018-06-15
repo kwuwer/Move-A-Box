@@ -8,6 +8,7 @@ public class GameManager
     // Deklaracje zmiennych jak poziom / ilość żyć / szybkość do przodu i na boki
     public string difficulty { get; set; }
     public int lifes { get; set; }
+    public int extraLifes { get; set; }
     public float fwSpeed { get; set; }
     public float maxforce { get; set; }
     public float sideSpeed { get; set; }
@@ -87,6 +88,7 @@ public class GameManager
                 lifes = 4;
                 break;
         }
+        extraLifes = 0;
     }
 
 
