@@ -105,6 +105,8 @@ public class PlayerController : MonoBehaviour {
     // Collision!
     private void OnCollisionEnter(Collision collision)
     {
+        GameObject otherObject = collision.gameObject;
+
         if (enabledGodMode == false)
         {
             if (collision.gameObject.CompareTag("Obstacle") == true)
@@ -117,9 +119,11 @@ public class PlayerController : MonoBehaviour {
                 else
                 {
                     Debug.Log("Collision!");
+                    //Potrzebne aby nie odtwarzać dźwięku przy każdym kontaktu z klockiem
                     if (soundOn == false)
                     {
-                        var audioSource = GetComponent<AudioSource>();
+                        //Odwołanie się do dźwięku klocka
+                        var audioSource = otherObject.GetComponent<AudioSource>();
                         audioSource.Play();
                     }
                     forwardForce = 0;
@@ -129,25 +133,35 @@ public class PlayerController : MonoBehaviour {
                 }
             }
         }
+        
     }
-
     // Trigger - różni się o tyle, że jest aktywowany, a na obiekt nie działa
     // fizyka
     private void OnTriggerEnter(Collider other)
     {
+        
         if (other.gameObject.CompareTag("Tar") == true)
         {
+            
             if (hitTar == false)
             {
+                //Odwołanie się do dźwięku beczki
+                var audioSource = GameObject.FindGameObjectWithTag("Tar").GetComponent<AudioSource>();
+                audioSource.Play();
+
                 sideForce = sideForce / 4;
                 other.gameObject.SetActive(false);
                 hitTar = true;
+                
             }
         }
         if (other.gameObject.CompareTag("ExtraLife") == true)
         {
             if (addedExtraLife == false)
             {
+                //Odwołanie się do dźwięku serca
+                var audioSource = GameObject.FindGameObjectWithTag("ExtraLife").GetComponent<AudioSource>();
+                audioSource.Play();
                 GameManager.Instance.extraLifes += 1;
                 other.gameObject.SetActive(false);
                 addedExtraLife = true;
@@ -157,6 +171,9 @@ public class PlayerController : MonoBehaviour {
         {
             if (enabledGodMode == false)
             {
+                //Odwołanie się do dźwięku gwiazdki
+                var audioSource = GameObject.FindGameObjectWithTag("Immortal").GetComponent<AudioSource>();
+                audioSource.Play();
                 enabledGodMode = true;
                 other.gameObject.SetActive(false);
             }
