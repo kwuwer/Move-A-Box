@@ -18,8 +18,8 @@ public class PlayerController : MonoBehaviour {
 
     // Czy przegraliśmy? Czy wygraliśmy?
     // Ekstra zmienne, które sprawdzają czy już coś się wykonało
-    private  bool lostLife;
-    private  bool finishedLevel;
+    public  bool lostLife;
+    public  bool finishedLevel;
     private bool soundOn;
     private bool hitTar;
     private bool addedExtraLife;
