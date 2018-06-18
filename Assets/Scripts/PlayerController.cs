@@ -11,14 +11,16 @@ public class PlayerController : MonoBehaviour {
     public GameObject playerCamera;
     // Offset służy nam do ustawienia kamery za graczem w pozycji 'fixed'
     private Vector3 offset; 
-    public float forwardForce;
-    public float maxForce;
-    public float sideForce;
+    // Siły działające na gracza
+    private float forwardForce;
+    private float maxForce;
+    private float sideForce;
 
     // Czy przegraliśmy? Czy wygraliśmy?
-    public bool lostLife;
-    public bool finishedLevel;
-    public bool soundOn;
+    // Ekstra zmienne, które sprawdzają czy już coś się wykonało
+    private  bool lostLife;
+    private  bool finishedLevel;
+    private bool soundOn;
     private bool hitTar;
     private bool addedExtraLife;
     private bool enabledGodMode;
@@ -128,6 +130,9 @@ public class PlayerController : MonoBehaviour {
             }
         }
     }
+
+    // Trigger - różni się o tyle, że jest aktywowany, a na obiekt nie działa
+    // fizyka
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Tar") == true)

@@ -22,7 +22,7 @@ public class MenuController : MonoBehaviour {
     public void QuitGame(){
         Application.Quit();
     }
-
+    // Taki bajer, że gra się niby ładuje przez 1 sekundę ;)
     IEnumerator PlayGameCoroutine()
     {
         yield return new WaitForSeconds(1.0f);

@@ -87,7 +87,6 @@ public class LevelController : MonoBehaviour
     }
 
     // Sprawdzamy co klatkę czy 'plejer' wtopił, czy może udało się mu skończyć poziom
-    // Mam tu trochę rozjazd między finishedLevel a LostLife... do poprawienia -- KW
     private void Update()
     {
         if (_player.finishedLevel == true){
