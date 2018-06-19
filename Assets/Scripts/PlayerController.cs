@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerController : MonoBehaviour {
 
     // Referencje do rigidbody, kamery, deklaracje zmiennych
@@ -25,6 +26,12 @@ public class PlayerController : MonoBehaviour {
     private bool addedExtraLife;
     private bool enabledGodMode;
 
+    public AudioClip tar;
+    public AudioClip star;
+    public AudioClip heart;
+    public AudioClip obstacle;
+    public AudioClip complete;
+    private AudioSource audio;
 
     // Sprawdzamy czy ruszamy się w lewo czy prawo
     private bool leftSide;
@@ -43,6 +50,7 @@ public class PlayerController : MonoBehaviour {
         hitTar = false;
         addedExtraLife = false;
         enabledGodMode = false;
+        audio = GetComponent<AudioSource>();
 	}
 
     /* Primo  : sprawdzamy, czy mamy się poruszać w lewo czy w prawo
@@ -123,8 +131,8 @@ public class PlayerController : MonoBehaviour {
                     if (soundOn == false)
                     {
                         //Odwołanie się do dźwięku klocka
-                        var audioSource = otherObject.GetComponent<AudioSource>();
-                        audioSource.Play();
+                        audio.clip = obstacle;
+                        audio.Play();
                     }
                     forwardForce = 0;
                     rb.AddForce(0, 0, forwardForce);
@@ -145,10 +153,9 @@ public class PlayerController : MonoBehaviour {
             
             if (hitTar == false)
             {
-                //Odwołanie się do dźwięku beczki
-                var audioSource = GameObject.FindGameObjectWithTag("Tar").GetComponent<AudioSource>();
-                audioSource.Play();
-
+                //Odtworzenie dźwięku beczki
+                audio.clip = tar;
+                audio.Play();
                 sideForce = sideForce / 4;
                 other.gameObject.SetActive(false);
                 hitTar = true;
@@ -159,9 +166,9 @@ public class PlayerController : MonoBehaviour {
         {
             if (addedExtraLife == false)
             {
-                //Odwołanie się do dźwięku serca
-                var audioSource = GameObject.FindGameObjectWithTag("ExtraLife").GetComponent<AudioSource>();
-                audioSource.Play();
+                //Odtworzenie dźwięku serca
+                audio.clip = heart;
+                audio.Play();
                 GameManager.Instance.extraLifes += 1;
                 other.gameObject.SetActive(false);
                 addedExtraLife = true;
@@ -171,9 +178,9 @@ public class PlayerController : MonoBehaviour {
         {
             if (enabledGodMode == false)
             {
-                //Odwołanie się do dźwięku gwiazdki
-                var audioSource = GameObject.FindGameObjectWithTag("Immortal").GetComponent<AudioSource>();
-                audioSource.Play();
+                //Odtworzenie dźwięku gwiazdki
+                audio.clip = star;
+                audio.Play();
                 enabledGodMode = true;
                 other.gameObject.SetActive(false);
             }
