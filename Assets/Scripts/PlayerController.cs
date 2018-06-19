@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerController : MonoBehaviour {
 
     // Referencje do rigidbody, kamery, deklaracje zmiennych
@@ -11,14 +12,26 @@ public class PlayerController : MonoBehaviour {
     public GameObject playerCamera;
     // Offset służy nam do ustawienia kamery za graczem w pozycji 'fixed'
     private Vector3 offset; 
-    public float forwardForce;
-    public float maxForce;
-    public float sideForce;
+    // Siły działające na gracza
+    private float forwardForce;
+    private float maxForce;
+    private float sideForce;
 
     // Czy przegraliśmy? Czy wygraliśmy?
-    public bool lostLife;
-    public bool finishedLevel;
-    public bool soundOn;
+    // Ekstra zmienne, które sprawdzają czy już coś się wykonało
+    public  bool lostLife;
+    public  bool finishedLevel;
+    private bool soundOn;
+    private bool hitTar;
+    private bool addedExtraLife;
+    private bool enabledGodMode;
+
+    public AudioClip tar;
+    public AudioClip star;
+    public AudioClip heart;
+    public AudioClip obstacle;
+    public AudioClip complete;
+    private AudioSource audio;
 
     // Sprawdzamy czy ruszamy się w lewo czy prawo
     private bool leftSide;
@@ -34,6 +47,10 @@ public class PlayerController : MonoBehaviour {
         lostLife = false;
         soundOn = false;
         finishedLevel = false;
+        hitTar = false;
+        addedExtraLife = false;
+        enabledGodMode = false;
+        audio = GetComponent<AudioSource>();
 	}
 
     /* Primo  : sprawdzamy, czy mamy się poruszać w lewo czy w prawo
@@ -96,19 +113,82 @@ public class PlayerController : MonoBehaviour {
     // Collision!
     private void OnCollisionEnter(Collision collision)
     {
-       
-        if (collision.gameObject.CompareTag("Obstacle") == true){
-            Debug.Log("Collision!");
-            if (soundOn == false)
+        GameObject otherObject = collision.gameObject;
+
+        if (enabledGodMode == false)
+        {
+            if (collision.gameObject.CompareTag("Obstacle") == true)
             {
-                var audioSource = GetComponent<AudioSource>();
-                audioSource.Play();
+                if (GameManager.Instance.extraLifes > 0)
+                {
+                    collision.gameObject.SetActive(false);
+                    GameManager.Instance.extraLifes -= 1;
+                }
+                else
+                {
+                    Debug.Log("Collision!");
+                    //Potrzebne aby nie odtwarzać dźwięku przy każdym kontaktu z klockiem
+                    if (soundOn == false)
+                    {
+                        //Odwołanie się do dźwięku klocka
+                        audio.clip = obstacle;
+                        audio.Play();
+                    }
+                    forwardForce = 0;
+                    rb.AddForce(0, 0, forwardForce);
+                    lostLife = true;
+                    soundOn = true;
+                }
             }
-            forwardForce = 0;
-            rb.AddForce(0, 0, forwardForce);
-            lostLife = true;
-            soundOn = true;
         }
+        
+    }
+    // Trigger - różni się o tyle, że jest aktywowany, a na obiekt nie działa
+    // fizyka
+    private void OnTriggerEnter(Collider other)
+    {
+        
+        if (other.gameObject.CompareTag("Tar") == true)
+        {
+            
+            if (hitTar == false)
+            {
+                //Odtworzenie dźwięku beczki
+                audio.clip = tar;
+                audio.Play();
+                sideForce = sideForce / 4;
+                other.gameObject.SetActive(false);
+                hitTar = true;
+                
+            }
         }
+        if (other.gameObject.CompareTag("ExtraLife") == true)
+        {
+            if (addedExtraLife == false)
+            {
+                //Odtworzenie dźwięku serca
+                audio.clip = heart;
+                audio.Play();
+                GameManager.Instance.extraLifes += 1;
+                other.gameObject.SetActive(false);
+                addedExtraLife = true;
+            }
+        }
+        if (other.gameObject.CompareTag("Immortal") == true)
+        {
+            if (enabledGodMode == false)
+            {
+                //Odtworzenie dźwięku gwiazdki
+                audio.clip = star;
+                audio.Play();
+                enabledGodMode = true;
+                other.gameObject.SetActive(false);
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        addedExtraLife = false;
+    }
 }
 

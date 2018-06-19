@@ -14,7 +14,6 @@ public class LevelController : MonoBehaviour
     public GameObject LostLifePanel;
     public GameObject GameOver;
     public Text LifesText;
-
     /* Sprawdzamy, czy już wykonaliśmy funkcję... 
      * inaczej będzie się odpalać w nieskończoność
      */
@@ -52,6 +51,9 @@ public class LevelController : MonoBehaviour
     public void FinishedLevel(){
         if (alreadyDone != true)
         {
+            // Level finished sound
+            _player.GetComponent<AudioSource>().clip = _player.complete;
+             _player.GetComponent<AudioSource>().Play();
             alreadyDone = true;
             FinishPanel.SetActive(true);
             LevelIndicator.SetActive(false);
@@ -87,7 +89,6 @@ public class LevelController : MonoBehaviour
     }
 
     // Sprawdzamy co klatkę czy 'plejer' wtopił, czy może udało się mu skończyć poziom
-    // Mam tu trochę rozjazd między finishedLevel a LostLife... do poprawienia -- KW
     private void Update()
     {
         if (_player.finishedLevel == true){
@@ -97,4 +98,5 @@ public class LevelController : MonoBehaviour
         if (_player.lostLife == true)
             LostLife();
     }
+
 }
